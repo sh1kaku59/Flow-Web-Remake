@@ -1,0 +1,29 @@
+# Dependencies & Build Outputs
+node_modules/
+dist/
+build/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+
+# Temp files & caches
+temp/*.tmp
+temp/*.wav
+!temp/.gitkeep
+.cache/
+.pytest_cache/
+*.tsbuildinfo
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

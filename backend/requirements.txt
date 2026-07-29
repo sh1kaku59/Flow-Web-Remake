@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+pgvector
+celery
+redis
+python-multipart
+pydantic
+pydantic-settings
+python-dotenv
+supabase
+alembic
+reportlab
+python-docx
+pypdf
