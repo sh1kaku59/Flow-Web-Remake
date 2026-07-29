@@ -40,7 +40,7 @@ export function ProcessingView({ uploadState, audioDurationSec }: ProcessingView
      title: "Truyền tải âm thanh & Khởi tạo AI",
      subtitle: "Đang gửi dữ liệu âm thanh an toàn đến mô hình Pyannote & Whisper...",
      estimatedSeconds: getEstimatedSeconds("uploading"),
-     nearFinishHint: "Đang chuyển giao dữ liệu mô hình...",
+     nearFinishHint: t("near_finish_hint_uploading"),
      borderGradient: "from-[#8c00ff] via-[#a855f7] to-[#0aa9f5]",
      screenAura: "from-purple-900/35 via-purple-950/15 to-transparent",
      icon: (
@@ -61,7 +61,7 @@ export function ProcessingView({ uploadState, audioDurationSec }: ProcessingView
      title: t("processing_step1"),
      subtitle: t("step1_subtitle"),
      estimatedSeconds: getEstimatedSeconds("step1"),
-     nearFinishHint: "Đang chuẩn bị phân đoạn người nói...",
+     nearFinishHint: t("near_finish_hint_step1"),
      borderGradient: "from-[#8c00ff] via-[#a855f7] to-[#0aa9f5]",
      screenAura: "from-purple-900/35 via-purple-950/15 to-transparent",
      icon: (
@@ -98,7 +98,7 @@ export function ProcessingView({ uploadState, audioDurationSec }: ProcessingView
      title: t("processing_step3"),
      subtitle: t("step2_subtitle"),
      estimatedSeconds: getEstimatedSeconds("step2"),
-     nearFinishHint: "Đang hoàn tất nhận diện người nói & văn bản...",
+     nearFinishHint: t("near_finish_hint_step2"),
      borderGradient: "from-[#0aa9f5] via-[#0284c7] to-[#8c00ff]",
      screenAura: "from-cyan-900/35 via-blue-950/15 to-transparent",
      icon: (
@@ -130,7 +130,7 @@ export function ProcessingView({ uploadState, audioDurationSec }: ProcessingView
      title: t("processing_step5"),
      subtitle: t("step3_subtitle"),
      estimatedSeconds: getEstimatedSeconds("step3"),
-     nearFinishHint: "Đang tổng hợp tri thức AI & xuất báo cáo...",
+     nearFinishHint: t("near_finish_hint_step3"),
      borderGradient: "from-[#8c00ff] via-[#3b82f6] to-[#0aa9f5]",
      screenAura: "from-purple-900/25 via-cyan-950/20 to-transparent",
      icon: (

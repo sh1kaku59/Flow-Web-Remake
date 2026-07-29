@@ -59,6 +59,10 @@ export const translations = {
   "processing_step3": "Speech-to-Text (STT)",
   "processing_step4": "Timestamp Alignment",
   "processing_step5": "Semantic Analysis",
+  "near_finish_hint_uploading": "Transferring model data...",
+  "near_finish_hint_step1": "Preparing speaker diarization...",
+  "near_finish_hint_step2": "Finalizing speaker recognition & text transcription...",
+  "near_finish_hint_step3": "Synthesizing AI knowledge & generating report...",
   
   "tab_transcript": "Transcript",
   "tab_summary": "Summary",
@@ -231,6 +235,10 @@ export const translations = {
   "processing_step3": "Chuyển giọng nói thành văn bản",
   "processing_step4": "Đồng bộ mốc thời gian",
   "processing_step5": "Phân tích ngữ nghĩa",
+  "near_finish_hint_uploading": "Đang chuyển giao dữ liệu mô hình...",
+  "near_finish_hint_step1": "Đang chuẩn bị phân đoạn người nói...",
+  "near_finish_hint_step2": "Đang hoàn tất nhận diện người nói & văn bản...",
+  "near_finish_hint_step3": "Đang tổng hợp tri thức AI & xuất báo cáo...",
   
   "tab_transcript": "Bản ghi âm",
   "tab_summary": "Tóm tắt",
