@@ -17,24 +17,33 @@ async def upload_audio(
     db: Session = Depends(get_db),
     workspace: AnonymousWorkspace = Depends(get_workspace_context)
 ):
-    # 1. Validate file format and size
-    if not file.content_type.startswith("audio/"):
-        raise HTTPException(status_code=400, detail="Invalid file type. Must be audio.")
+    # 1. Validate file format and size safely
+    content_type = file.content_type or ""
+    filename = file.filename or ""
+    valid_exts = (".wav", ".mp3", ".m4a", ".mp4", ".aac", ".flac", ".ogg", ".webm", ".wma")
+    if not (content_type.startswith("audio/") or content_type.startswith("video/") or filename.lower().endswith(valid_exts)):
+        raise HTTPException(status_code=400, detail="Vui lòng tải lên tệp âm thanh hợp lệ (WAV, MP3, M4A, MP4...).")
         
     file_bytes = await file.read()
     if len(file_bytes) > 50 * 1024 * 1024: # 50MB max limit
         raise HTTPException(status_code=413, detail="Dung lượng tệp âm thanh tải lên quá 50MB.")
         
-    # 2. Create Meeting in DB
-    meeting = Meeting(
-        workspace_id=workspace.id,
-        title=file.filename or "New Meeting",
-        status="Pending",
-        expires_at=datetime.now(timezone.utc) + timedelta(days=7)
-    )
-    db.add(meeting)
-    db.commit()
-    db.refresh(meeting)
+    try:
+        # 2. Create Meeting in DB
+        meeting = Meeting(
+            workspace_id=workspace.id,
+            title=file.filename or "New Meeting",
+            status="Pending",
+            expires_at=datetime.now(timezone.utc) + timedelta(days=7)
+        )
+        db.add(meeting)
+        db.commit()
+        db.refresh(meeting)
+    except Exception as e:
+        db.rollback()
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Không thể khởi tạo cuộc họp: {str(e)}")
     
     # 3. Upload to Object Storage
     import os

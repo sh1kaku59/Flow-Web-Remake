@@ -76,8 +76,11 @@ async def upload_voice_sample(
     db: Session = Depends(get_db),
     workspace: AnonymousWorkspace = Depends(get_workspace_context)
 ):
-    if not file.content_type.startswith("audio/"):
-        raise HTTPException(status_code=400, detail="Invalid file type. Must be audio.")
+    content_type = file.content_type or ""
+    filename = file.filename or ""
+    valid_exts = (".wav", ".mp3", ".m4a", ".mp4", ".aac", ".flac", ".ogg", ".webm", ".wma")
+    if not (content_type.startswith("audio/") or content_type.startswith("video/") or filename.lower().endswith(valid_exts)):
+        raise HTTPException(status_code=400, detail="Vui lòng tải lên tệp mẫu giọng nói hợp lệ (WAV, MP3, M4A...).")
         
     file_bytes = await file.read()
     if len(file_bytes) > 50 * 1024 * 1024: # 50MB max limit for voice samples
