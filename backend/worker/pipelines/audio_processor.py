@@ -7,12 +7,16 @@ logger = logging.getLogger(__name__)
 def preprocess_audio(input_path: str, output_path: str) -> str:
     """
     Chuẩn hóa âm thanh đầu vào về định dạng WAV, 16kHz, mono.
-    Đây là định dạng tối ưu nhất để đưa vào Whisper và Pyannote.
+    Nếu không có ffmpeg/imageio_ffmpeg, trả về input_path trực tiếp.
     """
     logger.info(f"Preprocessing audio: {input_path}")
     
-    import imageio_ffmpeg
-    ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
+    ffmpeg_exe = "ffmpeg"
+    try:
+        import imageio_ffmpeg
+        ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
+    except Exception:
+        pass
     
     command = [
         ffmpeg_exe,
@@ -27,6 +31,6 @@ def preprocess_audio(input_path: str, output_path: str) -> str:
         subprocess.run(command, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         logger.info(f"Successfully preprocessed audio to: {output_path}")
         return output_path
-    except subprocess.CalledProcessError as e:
-        logger.error(f"FFmpeg failed: {e}")
-        raise Exception(f"Failed to preprocess audio: {str(e)}")
+    except Exception as e:
+        logger.warning(f"Audio preprocessing skipped or failed ({e}), returning original file.")
+        return input_path
