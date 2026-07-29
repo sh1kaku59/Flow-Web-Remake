@@ -122,7 +122,12 @@ def process_meeting(job_id: str):
             VoiceSample.embedding_vector.isnot(None)
         ).all()
         
-        unique_speakers = list(set([d["speaker"] for d in diarization_results]))
+        diar_spks = [d["speaker"] for d in diarization_results if "speaker" in d]
+        trans_spks = [t["speaker"] for t in transcription_results if "speaker" in t]
+        unique_speakers = list(set(diar_spks + trans_spks))
+        if not unique_speakers:
+            unique_speakers = ["SPEAKER_00"]
+            
         speaker_mapping = {}
         
         try:
@@ -131,11 +136,13 @@ def process_meeting(job_id: str):
             import librosa
             audio_data, sr = librosa.load(processed_audio_path, sr=16000)
             for spk in unique_speakers:
-                spk_segments = [d for d in diarization_results if d["speaker"] == spk]
-                longest_seg = max(spk_segments, key=lambda x: x["end"] - x["start"])
+                spk_segments = [d for d in diarization_results if d.get("speaker") == spk]
+                if not spk_segments:
+                    spk_segments = [t for t in transcription_results if t.get("speaker") == spk]
+                longest_seg = max(spk_segments, key=lambda x: x.get("end", 0) - x.get("start", 0)) if spk_segments else {"start": 0, "end": 1}
                 
                 # Minimum 1 second for embedding
-                if longest_seg["end"] - longest_seg["start"] < 1.0:
+                if longest_seg.get("end", 0) - longest_seg.get("start", 0) < 1.0:
                     best_match = spk
                 else:
                     start_sample = int(longest_seg["start"] * sr)
@@ -194,10 +201,13 @@ def process_meeting(job_id: str):
             
             # Find matching speaker
             assigned_speaker_id = None
-            for d_seg in diarization_results:
-                if d_seg["start"] <= mid_point <= d_seg["end"]:
-                    assigned_speaker_id = speaker_mapping.get(d_seg["speaker"])
-                    break
+            if "speaker" in t_seg and t_seg["speaker"] in speaker_mapping:
+                assigned_speaker_id = speaker_mapping.get(t_seg["speaker"])
+            else:
+                for d_seg in diarization_results:
+                    if d_seg.get("start", 0) <= mid_point <= d_seg.get("end", 0):
+                        assigned_speaker_id = speaker_mapping.get(d_seg.get("speaker"))
+                        break
                     
             if not assigned_speaker_id and len(speaker_mapping) > 0:
                 assigned_speaker_id = list(speaker_mapping.values())[0]
