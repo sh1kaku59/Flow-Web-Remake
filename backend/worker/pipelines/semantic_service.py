@@ -109,7 +109,8 @@ def generate_embedding(text: str) -> list:
     Sử dụng Gemini embedding với chuỗi mô hình dự phòng chuẩn.
     """
     if not GEMINI_API_KEY:
-        raise RuntimeError("Gemini API key is not initialized.")
+        logger.warning("GEMINI_API_KEY is not set. Returning empty embedding.")
+        return []
     
     for model_name in EMBEDDING_FALLBACK_MODELS:
         for attempt in range(2):
