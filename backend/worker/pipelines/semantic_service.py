@@ -14,18 +14,15 @@ logger = logging.getLogger(__name__)
 raw_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY") or os.getenv("GOOGLE_GEMINI_API_KEY") or ""
 GEMINI_API_KEY = raw_key.strip().strip('"').strip("'")
 
-if GEMINI_API_KEY and GEMINI_API_KEY.startswith("AIza"):
+if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
 else:
-    logger.warning(f"GEMINI_API_KEY is missing or invalid (starts with '{GEMINI_API_KEY[:4]}...', expected 'AIza...').")
+    logger.warning("GEMINI_API_KEY is missing.")
 
 GEMINI_FALLBACK_MODELS = [
-    'gemini-3.5-flash',
-    'gemini-3.5-flash-lite',
-    'gemini-3.1-flash-lite',
-    'gemini-3-flash-preview',
-    'gemini-2.5-pro',
-    'gemini-2.0-flash'
+    'gemini-1.5-flash',
+    'gemini-2.0-flash',
+    'gemini-1.5-pro'
 ]
 
 def _call_gemini_with_model_fallback(prompt: str, max_retries_per_model=2, delay=2):

@@ -37,8 +37,8 @@ def transcribe_audio_gemini(audio_path: str) -> list:
 
     raw_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY") or os.getenv("GOOGLE_GEMINI_API_KEY") or ""
     GEMINI_API_KEY = raw_key.strip().strip('"').strip("'")
-    if not GEMINI_API_KEY or not GEMINI_API_KEY.startswith("AIza"):
-        logger.warning(f"GEMINI_API_KEY is missing or invalid (starts with '{GEMINI_API_KEY[:4]}...', expected 'AIza...').")
+    if not GEMINI_API_KEY:
+        logger.warning("GEMINI_API_KEY is not set.")
         return [
             {"start": 0.0, "end": 15.0, "speaker": "SPEAKER_00", "text": "Cuộc họp bắt đầu thảo luận về các vấn đề trọng tâm và kế hoạch triển khai dự án."},
             {"start": 15.0, "end": 30.0, "speaker": "SPEAKER_01", "text": "Các bên thống nhất phương án thực hiện và phân công nhiệm vụ cụ thể cho từng thành viên."}
@@ -47,25 +47,33 @@ def transcribe_audio_gemini(audio_path: str) -> list:
     genai.configure(api_key=GEMINI_API_KEY)
     uploaded_file = None
     try:
-        logger.info(f"Uploading audio file '{audio_path}' to Gemini 3.5 Flash API...")
+        logger.info(f"Uploading audio file '{audio_path}' to Gemini Flash API...")
         uploaded_file = genai.upload_file(path=audio_path)
         
         while uploaded_file.state.name == "PROCESSING":
             time.sleep(2)
             uploaded_file = genai.get_file(uploaded_file.name)
             
-        model = genai.GenerativeModel("gemini-3.5-flash")
-        prompt = """
-        Hãy nghe tệp âm thanh này và thực hiện bóc băng tiếng Việt kèm phân tách người nói (Speaker Diarization).
-        Mỗi đoạn thoại hãy ghi nhận mốc thời gian bắt đầu (giây), mốc kết thúc (giây), nhãn người nói (SPEAKER_00, SPEAKER_01...) và nội dung thoại.
-        
-        Yêu cầu output: CHỈ TRẢ VỀ JSON ARRAY hợp lệ:
-        [
-          {"start": 0.0, "end": 5.5, "speaker": "SPEAKER_00", "text": "Xin chào mọi người."},
-          {"start": 5.5, "end": 12.0, "speaker": "SPEAKER_01", "text": "Vâng chào anh, chúng ta bắt đầu cuộc họp."}
-        ]
-        """
-        response = model.generate_content([uploaded_file, prompt])
+        response = None
+        for model_name in ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro']:
+            try:
+                model = genai.GenerativeModel(model_name)
+                prompt = """
+                Hãy nghe tệp âm thanh này và thực hiện bóc băng tiếng Việt kèm phân tách người nói (Speaker Diarization).
+                Mỗi đoạn thoại hãy ghi nhận mốc thời gian bắt đầu (giây), mốc kết thúc (giây), nhãn người nói (SPEAKER_00, SPEAKER_01...) và nội dung thoại.
+                
+                Yêu cầu output: CHỈ TRẢ VỀ JSON ARRAY hợp lệ:
+                [
+                  {"start": 0.0, "end": 5.5, "speaker": "SPEAKER_00", "text": "Xin chào mọi người."},
+                  {"start": 5.5, "end": 12.0, "speaker": "SPEAKER_01", "text": "Vâng chào anh, chúng ta bắt đầu cuộc họp."}
+                ]
+                """
+                response = model.generate_content([uploaded_file, prompt])
+                if response and response.text:
+                    break
+            except Exception as e:
+                logger.warning(f"Audio model '{model_name}' failed: {e}. Trying next...")
+                
         result_text = response.text.strip()
         if result_text.startswith("```json"):
             result_text = result_text[7:]
