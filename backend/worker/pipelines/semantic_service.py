@@ -10,13 +10,14 @@ import google.generativeai as genai
 
 logger = logging.getLogger(__name__)
 
-# Tải GEMINI_API_KEY từ biến môi trường
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+# Tải và làm sạch GEMINI_API_KEY từ biến môi trường
+raw_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY") or os.getenv("GOOGLE_GEMINI_API_KEY") or ""
+GEMINI_API_KEY = raw_key.strip().strip('"').strip("'")
 
-if GEMINI_API_KEY:
+if GEMINI_API_KEY and GEMINI_API_KEY.startswith("AIza"):
     genai.configure(api_key=GEMINI_API_KEY)
 else:
-    logger.warning("GEMINI_API_KEY is not set. Summarization and Embedding will not be available.")
+    logger.warning(f"GEMINI_API_KEY is missing or invalid (starts with '{GEMINI_API_KEY[:4]}...', expected 'AIza...').")
 
 GEMINI_FALLBACK_MODELS = [
     'gemini-3.5-flash',

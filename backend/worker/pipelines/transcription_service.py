@@ -35,9 +35,10 @@ def transcribe_audio_gemini(audio_path: str) -> list:
     import json
     import time
 
-    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-    if not GEMINI_API_KEY:
-        logger.warning("GEMINI_API_KEY not set for Gemini Audio transcription.")
+    raw_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY") or os.getenv("GOOGLE_GEMINI_API_KEY") or ""
+    GEMINI_API_KEY = raw_key.strip().strip('"').strip("'")
+    if not GEMINI_API_KEY or not GEMINI_API_KEY.startswith("AIza"):
+        logger.warning(f"GEMINI_API_KEY is missing or invalid (starts with '{GEMINI_API_KEY[:4]}...', expected 'AIza...').")
         return [
             {"start": 0.0, "end": 15.0, "speaker": "SPEAKER_00", "text": "Cuộc họp bắt đầu thảo luận về các vấn đề trọng tâm và kế hoạch triển khai dự án."},
             {"start": 15.0, "end": 30.0, "speaker": "SPEAKER_01", "text": "Các bên thống nhất phương án thực hiện và phân công nhiệm vụ cụ thể cho từng thành viên."}
