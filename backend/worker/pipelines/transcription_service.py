@@ -1,3 +1,6 @@
+import os
+import logging
+
 try:
     import torch
     from faster_whisper import WhisperModel

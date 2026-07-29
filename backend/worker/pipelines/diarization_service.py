@@ -1,3 +1,6 @@
+import os
+import logging
+
 try:
     import torch
     from pyannote.audio import Pipeline
