@@ -20,8 +20,9 @@ else:
     logger.warning("GEMINI_API_KEY is missing.")
 
 GEMINI_FALLBACK_MODELS = [
-    'gemini-1.5-flash',
     'gemini-2.0-flash',
+    'gemini-2.0-flash-lite',
+    'gemini-1.5-flash',
     'gemini-1.5-pro'
 ]
 

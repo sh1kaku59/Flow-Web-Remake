@@ -55,7 +55,7 @@ def transcribe_audio_gemini(audio_path: str) -> list:
             uploaded_file = genai.get_file(uploaded_file.name)
             
         response = None
-        for model_name in ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro']:
+        for model_name in ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-flash']:
             try:
                 model = genai.GenerativeModel(model_name)
                 prompt = """
