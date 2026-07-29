@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.infrastructure.database.session import SessionLocal
-from app.modules.meeting_processing.models import ProcessingJob, ProcessingStep, Meeting, AudioFile
+from app.modules.meeting_processing.models import ProcessingJob, ProcessingStep, Meeting, AudioFile, Speaker
 from app.modules.meeting_intelligence.models import TranscriptSegment, MeetingSummary
 from datetime import datetime, timezone
 import logging
@@ -117,11 +117,6 @@ def process_meeting(job_id: str):
         
         # Load workspace voice samples
         from app.modules.meeting_intelligence.models import VoiceSample, SpeakerStatistic, SemanticSegment, SearchIndex, MeetingSummary
-        from app.modules.meeting_processing.models import Speaker
-        from worker.pipelines.voice_service import extract_voice_embedding, compare_embeddings
-        import soundfile as sf
-        import librosa
-        
         workspace_samples = db.query(VoiceSample).filter(
             VoiceSample.workspace_id == meeting.workspace_id,
             VoiceSample.embedding_vector.isnot(None)
@@ -131,6 +126,9 @@ def process_meeting(job_id: str):
         speaker_mapping = {}
         
         try:
+            from worker.pipelines.voice_service import extract_voice_embedding, compare_embeddings
+            import soundfile as sf
+            import librosa
             audio_data, sr = librosa.load(processed_audio_path, sr=16000)
             for spk in unique_speakers:
                 spk_segments = [d for d in diarization_results if d["speaker"] == spk]
