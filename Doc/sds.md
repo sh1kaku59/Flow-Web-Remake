@@ -801,6 +801,7 @@ configuration, safe interfaces, and boundary tests; do not invent constants.
 19. Complex multi-step flows do not run inside modals.
 20. External storage references are not treated as public URLs.
 21. Physical vector/visual/validation/retention values are not invented when unspecified.
+22. Physical deployment is hosted on Railway PaaS (Southeast Asia / Singapore Region) for Frontend static serve (`npx serve`) and Backend API (`FastAPI / Uvicorn`), paired with managed Supabase Cloud (PostgreSQL + pgvector 3072-dim & Storage).
 
 ---
 

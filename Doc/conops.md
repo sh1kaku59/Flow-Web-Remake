@@ -444,7 +444,7 @@ do not model “semantic search” itself as a one-time batch output.
 | AI Core — STT and diarization | PyTorch, OpenAI Whisper, Pyannote.audio        | Speech separation, speaker diarization, voice sample matching, and speech-to-text.                                                          |
 | AI Core — LLM & Embeddings    | Google Gemini 3.5 Flash & Gemini Embedding 001 | 5-section summarization, multi-model fallback chain, speaker behavior analysis, topic extraction, and 3072-dimensional vector embedding.     |
 | Database and Services         | Supabase PostgreSQL                            | Relational storage, pgvector (3072 dims), workspace-scoped data, and secure file storage.                                                   |
-| Infrastructure                | Docker / Cloud Platform                        | Consistent containerized development/deployment and expansion of processing components.                                                      |
+| Infrastructure                | Railway PaaS (Southeast Asia / Singapore Region) | Cloud-native PaaS deployment for Frontend (Nixpacks static serve) and Backend (FastAPI / Uvicorn container execution). |
 
 Do not assume every technology-to-function mapping in this ConOps table is the
 final implementable design. Validate it against the architectural and detailed

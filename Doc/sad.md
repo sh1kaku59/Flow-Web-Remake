@@ -105,10 +105,7 @@ Therefore:
 
 ### 2.3 Deployment driver
 
-Flow uses containerized deployment to provide repeatable environments,
-portability, runtime isolation, and manageable operations. The current allocation
-uses one VM for application containers and external managed database/object
-storage services.
+Flow uses Railway PaaS containerized deployment (Southeast Asia / Singapore Region) to provide repeatable environments, portability, runtime isolation, and manageable operations. The physical allocation uses Railway Cloud PaaS for frontend static serve and FastAPI backend container services, paired with external managed cloud services (Supabase PostgreSQL + pgvector and Supabase Storage).
 
 ### 2.4 Integration driver
 
@@ -614,14 +611,13 @@ No domain component directly imports or calls external provider clients.
 
 ### 12.2 Runtime component → physical allocation
 
-| Runtime component      | Physical deployment                                                    |
-| ---------------------- | ---------------------------------------------------------------------- |
-| Web Client application | Frontend assets served from Frontend container and executed in browser |
-| Backend API            | Backend API container on current VM                                    |
-| AI Worker              | AI Worker container on current VM                                      |
-| Redis                  | Redis container on current VM/private network                          |
-| Database               | External Supabase cloud service                                        |
-| Object Storage         | External object-storage service                                        |
+| Runtime component      | Physical deployment                                                                    |
+| ---------------------- | -------------------------------------------------------------------------------------- |
+| Web Client application | Frontend static build served via Railway Nixpacks (`npx serve`) and executed in browser |
+| Backend API            | Backend API container on Railway PaaS (Southeast Asia / Singapore Region)              |
+| AI Core / Worker       | Integrated background pipelines & Google Cloud Gemini 3.5 Flash / Embedding API         |
+| Database               | Managed Supabase PostgreSQL cloud service with pgvector (3072 dims)                   |
+| Object Storage         | Managed Supabase Storage cloud service                                                 |
 
 ### 12.3 Mapping compliance rule
 
