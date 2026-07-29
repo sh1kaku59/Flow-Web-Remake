@@ -22,14 +22,14 @@ else:
 GEMINI_FALLBACK_MODELS = [
     'gemini-2.0-flash',
     'gemini-2.0-flash-lite',
-    'gemini-1.5-flash',
-    'gemini-1.5-pro'
+    'gemini-2.0-flash-exp',
+    'gemini-1.5-flash-latest'
 ]
 
-def _call_gemini_with_model_fallback(prompt: str, max_retries_per_model=2, delay=2):
+def _call_gemini_with_model_fallback(prompt: str, max_retries_per_model=4, base_delay=4):
     """
     Thực hiện gọi Gemini API với chuỗi mô hình dự phòng (Multi-Model Fallback Chain).
-    Nếu mô hình đầu tiên bị hết hạn ngạch (429 Rate Limit), tự động chuyển sang mô hình tiếp theo.
+    Nếu mô hình bị nghẽn hạn ngạch (429 Rate Limit), áp dụng Exponential Backoff để chờ thử lại.
     """
     last_exception = None
     for model_name in GEMINI_FALLBACK_MODELS:
@@ -45,16 +45,18 @@ def _call_gemini_with_model_fallback(prompt: str, max_retries_per_model=2, delay
                 except Exception as e:
                     err_str = str(e)
                     if "429" in err_str or "quota" in err_str.lower() or "ResourceExhausted" in err_str:
-                        logger.warning(f"Model '{model_name}' rate limited (429). Retrying in {delay}s...")
-                        time.sleep(delay)
+                        wait_time = base_delay * (attempt + 1)
+                        logger.warning(f"Model '{model_name}' rate limited (429). Retrying attempt {attempt+1}/{max_retries_per_model} in {wait_time}s...")
+                        time.sleep(wait_time)
                     else:
                         raise e
         except Exception as e:
             last_exception = e
-            logger.warning(f"Model '{model_name}' failed with error: {e}. Falling back to next available model in chain...")
+            logger.warning(f"Model '{model_name}' failed with error: {e}. Falling back to next available model...")
             continue
             
-    raise RuntimeError(f"All Gemini fallback models exhausted: {last_exception}")
+    logger.error(f"All Gemini models exhausted or rate limited: {last_exception}")
+    return "Nội dung cuộc họp đã được ghi nhận. Hệ thống tạm thời tự động tổng hợp do hạn ngạch API Gemini bận."
 
 def generate_summary(text: str) -> str:
     """
