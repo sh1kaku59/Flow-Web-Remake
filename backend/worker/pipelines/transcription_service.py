@@ -55,7 +55,7 @@ def transcribe_audio_gemini(audio_path: str) -> list:
             uploaded_file = genai.get_file(uploaded_file.name)
             
         response = None
-        for model_name in ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-flash']:
+        for model_name in ['gemini-2.0-flash', 'gemini-2.0-flash-lite']:
             try:
                 model = genai.GenerativeModel(model_name)
                 prompt = """
@@ -68,12 +68,26 @@ def transcribe_audio_gemini(audio_path: str) -> list:
                   {"start": 5.5, "end": 12.0, "speaker": "SPEAKER_01", "text": "Vâng chào anh, chúng ta bắt đầu cuộc họp."}
                 ]
                 """
-                response = model.generate_content([uploaded_file, prompt])
+                for attempt in range(4):
+                    try:
+                        response = model.generate_content([uploaded_file, prompt])
+                        if response and response.text:
+                            break
+                    except Exception as e_retry:
+                        err_s = str(e_retry)
+                        if "429" in err_s or "quota" in err_s.lower() or "ResourceExhausted" in err_s:
+                            w = 4 * (attempt + 1)
+                            logger.warning(f"Audio model '{model_name}' rate limited (429). Retrying in {w}s...")
+                            time.sleep(w)
+                        else:
+                            raise e_retry
                 if response and response.text:
                     break
             except Exception as e:
                 logger.warning(f"Audio model '{model_name}' failed: {e}. Trying next...")
                 
+        if not response or not response.text:
+            raise Exception("All Gemini audio models rate limited or failed.")
         result_text = response.text.strip()
         if result_text.startswith("```json"):
             result_text = result_text[7:]
