@@ -437,14 +437,14 @@ do not model “semantic search” itself as a one-time batch output.
 
 ### 8.3 Technology stack recorded by the ConOps
 
-| Component                     | Technology                            | Operational purpose                                                                                                                          |
-| ----------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Frontend                      | ReactJS                               | Interactive browser UI, visualization, and controlled on-screen access.                                                                      |
-| Backend API                   | Python, FastAPI                       | High-performance APIs and coordination of processing flows.                                                                                  |
-| AI Core — STT and diarization | PyTorch, Whisper, Pyannote            | Speech separation, speaker diarization, and speech-to-text.                                                                                  |
-| NLP Engine                    | Wav2Vec2, DPRNN, BARTpho-word, BGE-m3 | Summarization, behavior analysis, semantic-time segmentation, topic extraction, and semantic search.                                         |
-| Database and Services         | Supabase PostgreSQL                   | Relational storage, pgvector, workspace-scoped data, and secure file storage. Supabase Auth is not required by the approved anonymous model. |
-| Infrastructure                | Docker                                | Consistent containerized development/deployment and expansion of processing components.                                                      |
+| Component                     | Technology                                     | Operational purpose                                                                                                                          |
+| ----------------------------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Frontend                      | ReactJS (React 18 + TypeScript + Vite)         | Interactive glassmorphic browser UI, bilingual i18n, light/dark mode visualization, and controlled on-screen access.                         |
+| Backend API                   | Python, FastAPI                                | High-performance APIs, SQLAlchemy ORM, ReportLab PDF export, and coordination of processing flows.                                          |
+| AI Core — STT and diarization | PyTorch, OpenAI Whisper, Pyannote.audio        | Speech separation, speaker diarization, voice sample matching, and speech-to-text.                                                          |
+| AI Core — LLM & Embeddings    | Google Gemini 3.5 Flash & Gemini Embedding 001 | 5-section summarization, multi-model fallback chain, speaker behavior analysis, topic extraction, and 3072-dimensional vector embedding.     |
+| Database and Services         | Supabase PostgreSQL                            | Relational storage, pgvector (3072 dims), workspace-scoped data, and secure file storage.                                                   |
+| Infrastructure                | Docker / Cloud Platform                        | Consistent containerized development/deployment and expansion of processing components.                                                      |
 
 Do not assume every technology-to-function mapping in this ConOps table is the
 final implementable design. Validate it against the architectural and detailed

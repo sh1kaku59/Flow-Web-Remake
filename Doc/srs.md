@@ -58,15 +58,9 @@ account-centric requirements inherited from the two source documents:
 | Retention             | Workspace data expires under configurable retention and referential cleanup. Exact duration remains an approved-configuration decision; do not invent one.                     |
 | Abuse control         | Rate-limit and quota public upload/processing by workspace and network signal; introduce CAPTCHA only when configured abuse thresholds require it.                             |
 
-Identifiers are preserved for traceability but their status is explicitly
-rebaselined. The following are **RETIRED and must not be implemented**:
-`US-02`, `US-03`, `US-04`, `US-19`, `US-20`, `US-21`, `US-22`, `US-23`,
-`US-31`, `FR-02`, `FR-19`, `FR-20`, `SF-08`, `SF-09`, and `SF-10`.
+Identifiers are preserved for traceability. Legacy account features (registration, email/OAuth login, logout, password reset, profile, avatar, account notifications) have been completely removed under `CR-ANON-01`.
 `US-01`/`FR-01` are redefined below as anonymous workspace entry; `FR-03` is
 redefined as anonymous workspace lifecycle rather than sign-up.
-
-Any legacy text under a retired heading is historical evidence only and has no
-implementation or test authority after `CR-ANON-01`.
 
 ---
 
@@ -204,70 +198,6 @@ access my account.
 - Automatically log out after a configurable inactivity timeout.
 
 **Derived mapping:** `FR-01`, `NFR-02`, `NFR-11`, `BR-03`, `BR-06`, `UC-02`.
-
-### US-02 — RETIRED: Google authentication
-
-**Status:** Removed by `CR-ANON-01`; all content in this subsection is
-non-authoritative historical traceability.
-
-**Story:** As a user, I want to log in using Google so that I can access my
-account quickly and securely.
-
-**Acceptance obligations:**
-
-- Present the supported external identity provider option.
-- Redirect to the provider authentication page and handle cancellation.
-- Securely receive and verify returned tokens, including token authenticity.
-- Create an account when the authenticated email does not exist.
-- Link to an existing account when the email matches.
-- Establish a secure Flow session after successful provider authentication.
-- Deny access when provider authentication fails.
-- Never store the provider password.
-- Log external-authentication events.
-
-**Derived mapping:** `FR-01`, `SF-01`, `NFR-02`, `NFR-11`, `UC-02`.
-
-### US-03 — RETIRED: Logout
-
-**Status:** Removed by `CR-ANON-01`. Closing the browser is not an authenticated
-logout; a future explicit “clear workspace data” feature requires approval.
-
-**Story:** As a user, I want to exit the system so that my account remains
-secure.
-
-**Acceptance obligations:**
-
-- Allow an authenticated user to log out at any time.
-- Invalidate the current session and clear client authentication tokens.
-- Redirect to the Landing page.
-- Prevent subsequent access to protected pages with the old session.
-- Log the logout event.
-
-**Derived mapping:** `FR-02`, `NFR-02`, `NFR-11`.
-
-### US-04 — RETIRED: Account registration
-
-**Status:** Removed by `CR-ANON-01`; Flow must not collect registration data.
-
-**Story:** As a new user, I want to register with email and password so that I
-can create a personal account.
-
-**Acceptance obligations:**
-
-- Support registration with email/password or an external provider.
-- Require full name, email, date of birth, and password for email/password
-  registration.
-- Validate email format and uniqueness.
-- Enforce password policy and password confirmation.
-- Hash the password before storage.
-- Create the account only after validation succeeds.
-- Optionally send verification email if verification is enabled.
-- Continue to the next onboarding step, such as voice-sample setup.
-- Log account creation.
-- Apply protection such as rate limiting against automated/malicious registration.
-
-**Derived mapping:** `FR-03`, `NFR-02`, `BR-01`, `BR-02`, `BR-06`, `UC-01`.
-
 ### US-05 — Initial voice-sample upload
 
 **Story:** As a visitor, I want to prepare reusable voice samples inside Upload
@@ -551,105 +481,6 @@ discussion statistics so that I can assess engagement.
 - Log analytics generation.
 
 **Derived mapping:** `FR-11`, `FR-17`, `NFR-04`, `NFR-09`, `NFR-11`, `UC-04`.
-
-### US-19 — RETIRED: View profile
-
-**Status:** Removed by `CR-ANON-01`; no Profile screen or account details exist.
-
-**Story:** As a user, I want to view my profile information so that I can verify
-my account details.
-
-**Acceptance obligations:**
-
-- Require authentication to access Profile.
-- Display the current user’s full name, date of birth, avatar, and email.
-- Prevent unauthorized and cross-user profile access.
-- Show a system error if profile retrieval fails.
-- Permit re-authentication requirements for sensitive operations.
-
-**Derived mapping:** `FR-19`, `NFR-02`, `NFR-09`, `BR-03`, `UC-05`.
-
-### US-20 — RETIRED: Update profile information
-
-**Status:** Removed by `CR-ANON-01`.
-
-**Story:** As a user, I want to update permitted profile information so that my
-account remains accurate.
-
-**Acceptance obligations:**
-
-- Require authentication and allow only permitted fields to be edited.
-- Validate required fields, non-empty mandatory values, format, and length.
-- Persist valid changes and show success feedback.
-- Show field-level validation feedback for invalid input.
-- Log profile modifications.
-- Do not alter data owned by another user.
-
-**Derived mapping:** `FR-19`, `SF-08`, `NFR-02`, `NFR-09`, `NFR-11`, `BR-03`,
-`UC-05`.
-
-### US-21 — RETIRED: Change avatar
-
-**Status:** Removed by `CR-ANON-01`.
-
-**Story:** As a user, I want to update my profile picture so that I can
-personalize my identity.
-
-**Acceptance obligations:**
-
-- Accept a new avatar in a supported image format such as JPG or PNG.
-- Enforce a configurable maximum file size and validate actual file type.
-- Reject malicious or unsupported files.
-- Store the new avatar securely and replace the previous avatar only after the
-  new upload succeeds.
-- Immediately display the updated avatar.
-- Show an error on failure and leave unrelated profile data unchanged.
-
-**Derived mapping:** `FR-19`, `SF-09`, `NFR-02`, `NFR-09`, `UC-05`.
-
-### US-22 — RETIRED: Change password
-
-**Status:** Removed by `CR-ANON-01`.
-
-**Story:** As a user, I want to change my password so that I can maintain account
-security.
-
-**Acceptance obligations:**
-
-- Require current password, new password, and new-password confirmation.
-- Verify the current password.
-- Enforce approved password policy, including minimum length.
-- Require new password and confirmation to match.
-- Reject an incorrect current password.
-- Hash the new password before storage.
-- Invalidate existing sessions after successful change.
-- Prevent reuse of prior passwords according to the approved history policy.
-- Show success feedback and log the change.
-
-**Derived mapping:** `SF-10`, `NFR-02`, `NFR-11`, `BR-06`, `UC-05`.
-
-### US-23 — RETIRED: Forgot-password OTP reset
-
-**Status:** Removed by `CR-ANON-01`.
-
-**Story:** As a user, I want to reset my password via email OTP so that I can
-regain access.
-
-**Acceptance obligations:**
-
-- Accept a password-reset request for an email address.
-- Internally validate whether the account exists while returning a response that
-  prevents account enumeration.
-- Generate a secure, time-limited token/OTP and send it to the registered email.
-- Support resend and invalidate superseded/used tokens as required by policy.
-- Permit reset only with a valid, unexpired token.
-- Enforce the same approved password policy during reset.
-- Invalidate the token after successful reset.
-- Show an error for invalid or expired tokens.
-- Log password-reset requests without logging sensitive token values.
-
-**Derived mapping:** `FR-20`, `NFR-02`, `NFR-11`, `BR-06`, `UC-05`.
-
 ### US-24 — View and play voice-sample collection
 
 **Story:** As a Meeting Assistant or Meeting Manager, I want to manage my voice
@@ -772,27 +603,6 @@ improve visual comfort.
 
 **Derived mapping:** `FR-22`, `SF-15`, `NFR-07`, `UC-05`.
 
-### US-31 — RETIRED: Account notification preferences
-
-**Status:** Removed by `CR-ANON-01`. Honest in-app processing status remains
-required, but email/account notification preferences are not part of Settings.
-
-**Story:** As a user, I want to configure notifications so that I receive only
-the alerts I need.
-
-**Acceptance obligations:**
-
-- Independently enable/disable processing-completion, account-related, and system
-  alert notifications.
-- Persist preferences to the owner’s profile.
-- Send a notification only when its corresponding preference is enabled.
-- Support in-application delivery.
-- When email delivery is enabled, send to the registered email.
-- Log notification events and confirm successful preference updates.
-- Prevent unauthorized preference changes.
-
-**Derived mapping:** `FR-22`, `SF-16`, `NFR-09`, `NFR-11`, `UC-05`.
-
 ---
 
 ## 4. Functional requirements baseline
@@ -814,7 +624,6 @@ the alerts I need.
 | ID    | Requirement                                | Source description                                                                              | Priority | Complexity |
 | ----- | ------------------------------------------ | ----------------------------------------------------------------------------------------------- | -------: | ---------: |
 | FR-01 | Start Anonymous Workspace                  | Enter from Landing without an account; securely create/resume a workspace and route to Upload.  |        1 |          4 |
-| FR-02 | RETIRED — Log Out                          | Removed by `CR-ANON-01`.                                                                        |        — |          — |
 | FR-03 | Anonymous Workspace Lifecycle              | Create, validate, expire, and clean up temporary workspace scope without credentials.           |        1 |          3 |
 | FR-04 | Upload Voice Sample                        | Upload/manage original voice-sample audio inside Upload and scope it to the workspace.          |        1 |          3 |
 | FR-05 | Upload Meeting Audio                       | Upload meeting audio for processing.                                                            |        1 |          3 |
@@ -831,8 +640,6 @@ the alerts I need.
 | FR-16 | Contextual Conversation Playback           | Jump to the audio timestamp associated with a relevant dialogue/result.                         |        1 |          1 |
 | FR-17 | Speaker Behavior Statistics                | Record selected higher-level behavior metrics.                                                  |        2 |          3 |
 | FR-18 | Temporary Diary Management                 | Review non-expired processing history and activity details for the current workspace.           |        2 |          3 |
-| FR-19 | RETIRED — User Management                  | Removed by `CR-ANON-01`.                                                                        |        — |          — |
-| FR-20 | RETIRED — Forgot Password                  | Removed by `CR-ANON-01`.                                                                        |        — |          — |
 | FR-21 | Voice Sample Management in Upload          | List, add, rename, delete, play, and organize workspace-scoped voice samples in the Upload tab. |        1 |          3 |
 | FR-22 | Local Settings                             | Configure Vietnamese/English and light/dark appearance without an account.                      |        2 |          4 |
 
@@ -862,15 +669,11 @@ the alerts I need.
 | SF-05 | Diary Management        | Refresh diary                                                | Read        |
 | SF-06 | Diary Management        | Rename diary                                                 | Update      |
 | SF-07 | Diary Management        | View diary details                                           | Read        |
-| SF-08 | RETIRED                 | Change profile information                                   | —           |
-| SF-09 | RETIRED                 | Change avatar                                                | —           |
-| SF-10 | RETIRED                 | Change password                                              | —           |
 | SF-11 | Voice Sample Management | Add voice sample                                             | Create      |
 | SF-12 | Voice Sample Management | Edit/rename voice sample information                         | Update      |
 | SF-13 | Voice Sample Management | Delete voice sample                                          | Delete      |
 | SF-14 | Settings                | Change language                                              | Update      |
 | SF-15 | Settings                | Change theme mode                                            | Update      |
-| SF-16 | RETIRED                 | Configure account notification preferences                   | —           |
 
 ---
 
@@ -1190,15 +993,6 @@ samples.
 logging, but the SRS entity list does not define a Diary, ActivityLog, or
 SystemEvent entity. The data design must resolve whether diary is a Meeting view
 and where event-level audit data is stored.
-
-### RDL-09 — RETIRED: External identity linkage data
-
-**Resolved by `CR-ANON-01`.** OAuth/external identity linkage is removed.
-
-### RDL-10 — Notification model is under-specified
-
-**Resolved by `CR-ANON-01`.** Account/email notification preferences are
-removed. Processing state and completion/failure remain visible in-app.
 
 ### RDL-11 — Speaker-statistic meaning mismatch
 

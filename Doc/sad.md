@@ -793,11 +793,6 @@ The Frontend container serves application assets, while execution occurs in the
 user browser. Architecture diagrams must not imply that browser-side state or
 rendering executes inside the VM container.
 
-### ADL-05 — RETIRED: OAuth current state versus evolution text
-
-**Resolved by `ADR-ANON-01`.** No OAuth provider or account identity is part of
-the active architecture.
-
 ### ADL-13 — Anonymous retention and abuse parameters
 
 The anonymous architecture is approved, but exact capability entropy encoding,

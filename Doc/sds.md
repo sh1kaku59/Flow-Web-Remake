@@ -106,7 +106,6 @@ coordination, and persistence details into one component.
 | FR                                    | Design component                                  | Design artifact/flow                         | Principal data                                                                    |
 | ------------------------------------- | ------------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------- |
 | FR-01 — Start Anonymous Workspace     | `COM-02` Anonymous Workspace Security             | Landing/Start sequence                       | AnonymousWorkspace                                                                |
-| FR-02 — RETIRED                       | —                                                 | No logout flow                               | —                                                                                 |
 | FR-03 — Workspace Lifecycle           | `COM-02` Anonymous Workspace Security             | create/resume/expire/cleanup                 | AnonymousWorkspace                                                                |
 | FR-04 — Upload Voice Sample           | `COM-03` Workspace Voice Samples                  | Upload-tab voice readiness                   | VoiceSample                                                                       |
 | FR-05 — Upload Meeting Audio          | `COM-04` Upload Management, `COM-08` Orchestrator | Upload sequence, AI-processing communication | Meeting, AudioFile, ProcessingJob                                                 |
@@ -123,8 +122,6 @@ coordination, and persistence details into one component.
 | FR-16 — Contextual Playback           | `COM-13` Playback                                 | Diary detail/playback flow                   | AudioFile, TranscriptSegment                                                      |
 | FR-17 — Speaker Statistics            | `COM-11` Speaker Behavior                         | Diary detail/analytics flow                  | SpeakerStatistic                                                                  |
 | FR-18 — Temporary Diary Management    | `COM-14` Diary Management                         | workspace/retention-aware Diary flow         | Meeting, ProcessingJob                                                            |
-| FR-19 — RETIRED                       | —                                                 | No user management                           | —                                                                                 |
-| FR-20 — RETIRED                       | —                                                 | No password recovery                         | —                                                                                 |
 | FR-21 — Voice Sample Management       | `COM-03` Workspace Voice Samples                  | Upload-tab voice-management sequence         | VoiceSample                                                                       |
 | FR-22 — Local Settings                | Frontend                                          | language/theme local persistence             | ClientSetting                                                                     |
 
