@@ -13,9 +13,12 @@ if not exist "%~dp0cloudflared.exe" (
     exit /b
 )
 
+:loop
 echo Starting Cloudflare Tunnel...
 echo Copy the https://....trycloudflare.com link below to share with anyone!
 echo.
 "%~dp0cloudflared.exe" tunnel --url http://localhost:5173
-
-pause
+echo.
+echo Tunnel connection dropped. Reconnecting in 3 seconds...
+timeout /t 3 /nobreak >nul
+goto loop
