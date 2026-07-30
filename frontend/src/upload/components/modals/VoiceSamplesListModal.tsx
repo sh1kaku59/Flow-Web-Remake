@@ -136,6 +136,7 @@ export function VoiceSamplesListModal({ isOpen, onClose }: VoiceSamplesListModal
    try {
     await fetch(`${API_BASE_URL}/voice-samples/${editingSample.id}`, {
      method: 'PATCH',
+     credentials: 'include',
      headers: { 'Content-Type': 'application/json' },
      body: JSON.stringify({ speaker_label: name })
     });
@@ -151,6 +152,7 @@ export function VoiceSamplesListModal({ isOpen, onClose }: VoiceSamplesListModal
    try {
     await fetch(`${API_BASE_URL}/voice-samples`, {
      method: 'POST',
+     credentials: 'include',
      body: formData
     });
     fetchSamples();
@@ -164,7 +166,7 @@ export function VoiceSamplesListModal({ isOpen, onClose }: VoiceSamplesListModal
 
  const handleDeleteSample = async (id: string) => {
   try {
-   await fetch(`${API_BASE_URL}/voice-samples/${id}`, { method: 'DELETE' });
+   await fetch(`${API_BASE_URL}/voice-samples/${id}`, { method: 'DELETE', credentials: 'include' });
    fetchSamples();
   } catch (e) {
    console.error(e);
