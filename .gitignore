@@ -27,3 +27,6 @@ temp/*.wav
 .DS_Store
 Thumbs.db
 desktop.ini
+*.exe
+cloudflared.exe
+
