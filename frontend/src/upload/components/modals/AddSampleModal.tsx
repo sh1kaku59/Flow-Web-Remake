@@ -39,8 +39,20 @@ export function AddSampleModal({ isOpen, onCancel, onAdd, initialData }: AddSamp
   }
  };
 
+ const [isDragOver, setIsDragOver] = useState(false);
+
+ const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  e.preventDefault();
+  setIsDragOver(true);
+ };
+
+ const handleDragLeave = () => {
+  setIsDragOver(false);
+ };
+
  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
   e.preventDefault();
+  setIsDragOver(false);
   if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
    setSelectedFile(e.dataTransfer.files[0]);
   }
@@ -102,10 +114,15 @@ export function AddSampleModal({ isOpen, onCancel, onAdd, initialData }: AddSamp
        {t("audio_file")}
       </label>
       <div
-       onDragOver={(e) => e.preventDefault()}
+       onDragOver={handleDragOver}
+       onDragLeave={handleDragLeave}
        onDrop={handleDrop}
        onClick={() => fileInputRef.current?.click()}
-       className="w-full min-h-[140px] flex flex-col items-center justify-center rounded-2xl border-2 border-dashed dark:border-white/20 border-gray-300 dark:bg-white/5 bg-gray-50 hover:border-purple-500/60 hover:bg-purple-500/5 transition-all duration-200 cursor-pointer p-6 text-center"
+       className={`w-full min-h-[140px] flex flex-col items-center justify-center rounded-2xl border-2 border-dashed transition-all duration-300 cursor-pointer p-6 text-center group relative overflow-hidden ${
+        isDragOver
+         ? "border-purple-500 bg-purple-500/15 shadow-[0_0_30px_rgba(168,85,247,0.35)] scale-[1.02]"
+         : "dark:border-white/20 border-gray-300 dark:bg-white/5 bg-gray-50 hover:border-purple-500/80 hover:bg-purple-500/10 hover:shadow-[0_0_25px_rgba(168,85,247,0.25)] hover:scale-[1.01]"
+       }`}
       >
        <input
         ref={fileInputRef}
