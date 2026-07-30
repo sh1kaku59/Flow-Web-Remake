@@ -33,7 +33,7 @@ export function VoiceSamplesListModal({ isOpen, onClose }: VoiceSamplesListModal
  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
  const [isLoading, setIsLoading] = useState(false);
  
- const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000/api/v1").replace(/\/+$/, "");
+ const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "/api/v1").replace(/\/+$/, "");
 
  const fetchSamples = async () => {
   setIsLoading(true);
