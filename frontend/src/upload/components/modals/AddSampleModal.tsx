@@ -16,6 +16,7 @@ export function AddSampleModal({ isOpen, onCancel, onAdd, initialData }: AddSamp
  const [selectedFile, setSelectedFile] = useState<File | null>(null);
  const [existingFileName, setExistingFileName] = useState<string | undefined>("");
  const fileInputRef = useRef<HTMLInputElement>(null);
+ const [isDragOver, setIsDragOver] = useState(false);
  
  useEffect(() => {
   if (isOpen) {
@@ -38,8 +39,6 @@ export function AddSampleModal({ isOpen, onCancel, onAdd, initialData }: AddSamp
    setSelectedFile(e.target.files[0]);
   }
  };
-
- const [isDragOver, setIsDragOver] = useState(false);
 
  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
   e.preventDefault();
