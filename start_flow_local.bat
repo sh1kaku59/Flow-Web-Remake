@@ -11,7 +11,7 @@ start "Flow Backend Server" cmd /k "cd /d %~dp0backend && .\venv\Scripts\activat
 
 echo.
 echo [2/2] Starting React Vite Frontend on http://localhost:5173 ...
-start "Flow Frontend Web App" cmd /k "cd /d %~dp0frontend && npm run dev"
+start "Flow Frontend Web App" cmd /k "cd /d %~dp0frontend && npm run dev -- --host"
 
 echo.
 echo ========================================================
