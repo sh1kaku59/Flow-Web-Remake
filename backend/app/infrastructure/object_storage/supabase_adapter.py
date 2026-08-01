@@ -10,7 +10,7 @@ class SupabaseStorageAdapter:
 
     def upload_file(self, bucket_name: str, file_path: str, file_bytes: bytes, content_type: str):
         if not self.client:
-            raise Exception("Supabase client not configured")
+            return self._save_local(file_path, file_bytes)
         
         try:
             return self.client.storage.from_(bucket_name).upload(
@@ -19,22 +19,45 @@ class SupabaseStorageAdapter:
                 file_options={"content-type": content_type}
             )
         except Exception as e:
-            if "Bucket not found" in str(e):
-                self.client.storage.create_bucket(bucket_name, options={"public": False})
-                return self.client.storage.from_(bucket_name).upload(
-                    file=file_bytes,
-                    path=file_path,
-                    file_options={"content-type": content_type}
-                )
-            raise e
+            err_str = str(e)
+            if "Bucket not found" in err_str:
+                try:
+                    self.client.storage.create_bucket(bucket_name, options={"public": False})
+                    return self.client.storage.from_(bucket_name).upload(
+                        file=file_bytes,
+                        path=file_path,
+                        file_options={"content-type": content_type}
+                    )
+                except Exception:
+                    pass
+            # Fallback to local storage for files > 50MB or if Supabase upload fails
+            return self._save_local(file_path, file_bytes)
+
+    def _save_local(self, file_path: str, file_bytes: bytes):
+        import os
+        full_path = os.path.join("temp", "uploads", file_path)
+        os.makedirs(os.path.dirname(full_path), exist_ok=True)
+        with open(full_path, "wb") as f:
+            f.write(file_bytes)
+        return {"path": file_path}
 
     def get_signed_url(self, bucket_name: str, file_path: str, expires_in: int = 3600):
+        import os
+        local_path = os.path.join("temp", "uploads", file_path)
+        if os.path.exists(local_path):
+            return f"/api/v1/audio/stream/{file_path}"
         if not self.client:
             return None
         res = self.client.storage.from_(bucket_name).create_signed_url(file_path, expires_in)
         return res.get("signedURL") if res else None
 
     def download_file(self, bucket_name: str, file_path: str) -> bytes:
+        import os
+        local_path = os.path.join("temp", "uploads", file_path)
+        if os.path.exists(local_path):
+            with open(local_path, "rb") as f:
+                return f.read()
+
         if not self.client:
             raise Exception("Supabase client not configured")
         
