@@ -10,6 +10,16 @@ import uuid
 
 router = APIRouter(prefix="/audio", tags=["Audio Upload"])
 
+from fastapi.responses import FileResponse
+import os
+
+@router.get("/stream/{file_path:path}")
+def stream_local_audio(file_path: str):
+    full_path = os.path.join("temp", "uploads", file_path)
+    if not os.path.exists(full_path):
+        raise HTTPException(status_code=404, detail="Audio file not found on local storage")
+    return FileResponse(full_path)
+
 @router.post("/upload")
 async def upload_audio(
     background_tasks: BackgroundTasks,
