@@ -22,8 +22,8 @@ async def upload_audio(
         raise HTTPException(status_code=400, detail="Invalid file type. Must be audio.")
         
     file_bytes = await file.read()
-    if len(file_bytes) > 50 * 1024 * 1024: # 50MB max limit
-        raise HTTPException(status_code=413, detail="Dung lượng tệp âm thanh tải lên quá 50MB.")
+    if len(file_bytes) > 500 * 1024 * 1024: # 500MB max limit
+        raise HTTPException(status_code=413, detail="Dung lượng tệp âm thanh tải lên quá 500MB.")
         
     # 2. Create Meeting in DB
     meeting = Meeting(

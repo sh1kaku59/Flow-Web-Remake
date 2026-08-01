@@ -33,7 +33,7 @@ export function UploadPage() {
    return;
   }
 
-  const MAX_SIZE = 50 * 1024 * 1024; // 50MB max limit
+  const MAX_SIZE = 500 * 1024 * 1024; // 500MB max limit
   if (file.size > MAX_SIZE) {
    setErrorMessage(t("upload_failed_desc"));
    setIsUploadFailedModalOpen(true);
