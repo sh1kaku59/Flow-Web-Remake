@@ -54,6 +54,8 @@ export const translations = {
   
   // Diary Detail & Processing
   "processing_title": "Processing Audio",
+  "uploading_title": "Audio Transfer & AI Initialization",
+  "uploading_subtitle": "Securely transmitting audio data to Pyannote & Whisper models...",
   "processing_step1": "Audio Preprocessing",
   "processing_step2": "Speaker Diarization",
   "processing_step3": "Speech-to-Text (STT)",
@@ -230,6 +232,8 @@ export const translations = {
   
   // Diary Detail & Processing
   "processing_title": "Đang xử lý Âm thanh",
+  "uploading_title": "Truyền tải âm thanh & Khởi tạo AI",
+  "uploading_subtitle": "Đang gửi dữ liệu âm thanh an toàn đến mô hình Pyannote & Whisper...",
   "processing_step1": "Tiền xử lý âm thanh",
   "processing_step2": "Phân tách giọng nói",
   "processing_step3": "Chuyển giọng nói thành văn bản",

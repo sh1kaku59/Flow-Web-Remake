@@ -36,9 +36,9 @@ export function ProcessingView({ uploadState, audioDurationSec }: ProcessingView
   switch (uploadState) {
    case "uploading":
     return {
-     stepNum: 1,
-     title: "Truyền tải âm thanh & Khởi tạo AI",
-     subtitle: "Đang gửi dữ liệu âm thanh an toàn đến mô hình Pyannote & Whisper...",
+     stepNum: 0,
+     title: t("uploading_title"),
+     subtitle: t("uploading_subtitle"),
      estimatedSeconds: getEstimatedSeconds("uploading"),
      nearFinishHint: t("near_finish_hint_uploading"),
      borderGradient: "from-[#8c00ff] via-[#a855f7] to-[#0aa9f5]",
