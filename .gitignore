@@ -16,6 +16,8 @@ __pycache__/
 # Temp files & caches
 temp/*.tmp
 temp/*.wav
+temp/uploads/
+backend/temp/
 !temp/.gitkeep
 .cache/
 .pytest_cache/
