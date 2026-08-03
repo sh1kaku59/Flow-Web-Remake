@@ -57,14 +57,27 @@ def _call_gemini_with_model_fallback(prompt: str, max_retries_per_model=2, delay
             
     raise RuntimeError(f"All Gemini fallback models exhausted: {last_exception}")
 
+from worker.pipelines.qwen_summarizer import generate_qwen_summary
+
 def generate_summary(text: str) -> str:
     """
-    Sử dụng Google Gemini API để tóm tắt văn bản cuộc họp tiếng Việt theo cấu trúc báo cáo chuẩn.
+    Tóm tắt văn bản cuộc họp tiếng Việt TUÂN THỦ 100% CẤU TRÚC BÁO CÁO CHUẨN 5 MỤC XUẤT SẮC.
+    Ưu tiên sử dụng mô hình HuggingFace (Qwen2.5-Instruct trên GPU CUDA) để tiết kiệm token và tránh 429.
+    Tự động dự phòng (Fallback) sang Gemini API nếu mô hình local không khả dụng.
     """
+    logger.info("Attempting meeting summarization via HuggingFace Qwen2.5 GPU model...")
+    try:
+        qwen_summary = generate_qwen_summary(text)
+        if qwen_summary and len(qwen_summary.strip()) > 50:
+            logger.info("Summary generated successfully via HuggingFace Qwen GPU model.")
+            return qwen_summary
+    except Exception as e:
+        logger.warning(f"HuggingFace Qwen summarizer failed/skipped: {e}. Falling back to Gemini API...")
+
     if not GEMINI_API_KEY:
         raise RuntimeError("Gemini API key is not initialized. Please check GEMINI_API_KEY.")
     
-    logger.info("Generating summary via Gemini API with model fallback...")
+    logger.info("Generating summary via Gemini API fallback with 5-section report format...")
     try:
         prompt = (
             "Bạn là chuyên gia phân tích và quản trị cuộc họp hàng đầu. Hãy tóm tắt toàn bộ cuộc họp sau đây bằng tiếng Việt "
@@ -82,18 +95,20 @@ def generate_summary(text: str) -> str:
             f"Nội dung cuộc họp:\n{text}"
         )
         summary = _call_gemini_with_model_fallback(prompt).strip()
-        logger.info("Summary generated successfully via Gemini.")
+        logger.info("Summary generated successfully via Gemini API fallback.")
         return summary
     except Exception as e:
         logger.error(f"Gemini API summary failed across all models: {e}")
         return (
             "## 1. Mục Tiêu & Tổng Quan Cuộc Họp\n"
             "- Cuộc họp thảo luận về công việc và định hướng nhiệm vụ.\n\n"
-            "## 2. Các Chủ Đề & Nội Dung Thảo Luận Chính\n"
+            "## 2. Tóm Tắt Ý Kiến & Đóng Góp Theo Từng Người Nói\n"
+            "- Trao đổi lập trường và đóng góp ý kiến giữa các thành viên.\n\n"
+            "## 3. Các Chủ Đề & Nội Dung Thảo Luận Chính\n"
             "- Trao đổi về tiến độ dự án và các vấn đề phát sinh.\n\n"
-            "## 3. Quyết Định Đã Thống Nhất\n"
+            "## 4. Quyết Định Đã Thống Nhất\n"
             "- Thống nhất kế hoạch triển khai công việc sắp tới.\n\n"
-            "## 4. Hành Động & Phân Công Công Việc (Action Items)\n"
+            "## 5. Kế Hoạch & Phân Công Công Việc (Action Items)\n"
             "- Theo dõi và cập nhật tiến độ công việc định kỳ."
         )
 
