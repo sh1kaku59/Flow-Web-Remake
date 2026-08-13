@@ -178,7 +178,7 @@ export function UploadPage() {
     <div className="relative z-20 flex flex-col items-center w-full">
      {/* Title */}
      {(uploadState === "idle" || uploadState === "selected") && (
-      <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mt-8 mb-12 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 drop-shadow-md animate-fade-slide-in">
+      <h1 className="text-3xl md:text-4xl font-extrabold tracking-normal px-4 py-1 leading-normal mt-8 mb-12 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 drop-shadow-md animate-fade-slide-in">
        {t("upload_title")}
       </h1>
      )}

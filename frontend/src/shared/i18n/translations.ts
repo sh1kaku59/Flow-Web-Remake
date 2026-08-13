@@ -64,7 +64,8 @@ export const translations = {
   "near_finish_hint_uploading": "Transferring model data...",
   "near_finish_hint_step1": "Preparing speaker diarization...",
   "near_finish_hint_step2": "Finalizing speaker recognition & text transcription...",
-  "near_finish_hint_step3": "Synthesizing AI knowledge & generating report...",
+  "near_finish_hint_step3": "Synthesizing AI knowledge & completing analysis...",
+  "playing": "Playing...",
   
   "tab_transcript": "Transcript",
   "tab_summary": "Summary",
@@ -242,7 +243,8 @@ export const translations = {
   "near_finish_hint_uploading": "Đang chuyển giao dữ liệu mô hình...",
   "near_finish_hint_step1": "Đang chuẩn bị phân đoạn người nói...",
   "near_finish_hint_step2": "Đang hoàn tất nhận diện người nói & văn bản...",
-  "near_finish_hint_step3": "Đang tổng hợp tri thức AI & xuất báo cáo...",
+  "near_finish_hint_step3": "Đang tổng hợp tri thức AI & hoàn tất phân tích...",
+  "playing": "Đang phát...",
   
   "tab_transcript": "Bản ghi âm",
   "tab_summary": "Tóm tắt",

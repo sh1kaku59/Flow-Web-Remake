@@ -60,11 +60,10 @@ export function DropzoneArea({
        </svg>
       </button>
       
-      {/* Liquid animated gradient audio icon container */}
-      <div className="relative flex h-[90px] w-[74px] items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 via-blue-500 to-cyan-400 bg-[length:200%_200%] animate-[pulse_3s_ease-in-out_infinite] shadow-[0_0_30px_rgba(147,51,234,0.4)] overflow-hidden transition-transform duration-500 hover:scale-105">
-       <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/30 via-transparent to-cyan-300/40 animate-[spin_8s_linear_infinite]" />
-       <div className="absolute right-0 top-0 border-b-[22px] border-l-[22px] border-b-transparent border-l-white/40 backdrop-blur-sm" />
-       <svg viewBox="0 0 24 24" fill="currentColor" className="h-[36px] w-[36px] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)] relative z-10">
+      {/* Soft glassmorphic glowing audio icon container */}
+      <div className="relative flex h-[90px] w-[74px] items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 via-indigo-600 to-cyan-500 shadow-[0_0_35px_rgba(168,85,247,0.45)] overflow-hidden transition-transform duration-500 hover:scale-105 border border-white/20">
+       <div className="absolute inset-0 bg-gradient-to-tr from-purple-400/20 via-cyan-400/20 to-transparent animate-pulse" />
+       <svg viewBox="0 0 24 24" fill="currentColor" className="h-[36px] w-[36px] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] relative z-10">
         <path d="M9 18V5l12-2v13M9 9l12-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         <circle cx="6" cy="18" r="3" />
         <circle cx="18" cy="16" r="3" />

@@ -291,7 +291,7 @@ export function VoiceSamplesListModal({ isOpen, onClose }: VoiceSamplesListModal
              {isPlaying && (
               <span className="flex items-center gap-1 text-[11px] font-bold text-cyan-500 dark:text-cyan-400 animate-pulse">
                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
-               Playing...
+               {t("playing") || "Đang phát..."}
               </span>
              )}
             </div>
