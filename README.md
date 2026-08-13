@@ -268,6 +268,7 @@ Nhấn đúp chuột vào file **`start_tunnel.bat`**:
 2. **Auto Purge TTL**: Tiến trình dọn dẹp tự động giải phóng dung lượng đĩa và dữ liệu cũ định kỳ.
 
 ---
+<img width="1923" height="920" alt="image" src="https://github.com/user-attachments/assets/2e368847-ff04-4a30-b555-a32da5024138" />
 
 ### 📜 LICENSE & CREDITS
 - Developed with ❤️ by **Flow Intelligence Team**.
