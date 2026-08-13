@@ -26,6 +26,7 @@ backend/temp/
 # IDE & OS files
 .vscode/
 .idea/
+Doc/
 .DS_Store
 Thumbs.db
 desktop.ini
